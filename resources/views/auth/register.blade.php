@@ -25,6 +25,7 @@
                                 </div>
                                 <div class="card-body">
                                     <form class="form" method="POST" action="{{ route('register') }}">
+                                        @csrf
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <div class="input-group-text">
@@ -79,7 +80,7 @@
                                                     <i class="tim-icons icon-lock-circle"></i>
                                                 </div>
                                             </div>
-                                            <input placeholder="Sandi" id="password-confirm" type="password"
+                                            <input placeholder="Konfirmasi sandi" id="password-confirm" type="password"
                                                 class="form-control" name="password_confirmation" required
                                                 autocomplete="new-password">
                                         </div>
