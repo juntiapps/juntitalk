@@ -20,6 +20,7 @@ class CreateChatsTable extends Migration
             $table->unsignedBigInteger('to_user_id');
             $table->foreign('to_user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('picture');
+            $table->text('chat');
             $table->timestamps();
         });
     }

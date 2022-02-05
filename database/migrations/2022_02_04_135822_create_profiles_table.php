@@ -23,7 +23,8 @@ class CreateProfilesTable extends Migration
             $table->unsignedBigInteger('gender_id');
             $table->foreign('gender_id')->references('id')->on('genders')->onDelete('cascade');
             $table->text('address');
-            $table->string('status');
+            $table->unsignedBigInteger('status_id');
+            $table->foreign('status_id')->references('id')->on('statuses')->onDelete('cascade');
             $table->text('bio');
             $table->timestamps();
         });

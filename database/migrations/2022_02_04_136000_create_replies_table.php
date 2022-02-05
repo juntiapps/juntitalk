@@ -21,7 +21,7 @@ class CreateRepliesTable extends Migration
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
             $table->unsignedBigInteger('comment_id');
             $table->foreign('comment_id')->references('id')->on('comments')->onDelete('cascade');
-            $table->integer('reply');
+            $table->text('reply');
             $table->timestamps();
         });
     }

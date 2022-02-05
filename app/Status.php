@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Gender extends Model
-{   
-    protected $table = 'genders';
+class Status extends Model
+{
+    protected $table = 'statuses';
 
     public function profile()
     {
