@@ -20,6 +20,8 @@ class CreateProfilesTable extends Migration
             $table->string('display_name',100);
             $table->string('profile_picture',100);
             $table->date('birthday');
+            $table->unsignedBigInteger('gender_id');
+            $table->foreign('gender_id')->references('id')->on('genders')->onDelete('cascade');
             $table->text('address');
             $table->string('status');
             $table->text('bio');
