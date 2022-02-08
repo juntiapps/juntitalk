@@ -19,7 +19,7 @@ class CreateProfilesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('display_name',100);
             $table->string('profile_picture',100);
-            $table->date('birthday');
+            $table->string('birthday');
             $table->unsignedBigInteger('gender_id');
             $table->foreign('gender_id')->references('id')->on('genders')->onDelete('cascade');
             $table->text('address');

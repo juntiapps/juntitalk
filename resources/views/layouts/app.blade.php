@@ -1,4 +1,5 @@
 <!doctype html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,8 +17,15 @@
     <link href="{{ asset('css/nucleo-icons.css') }}" rel="stylesheet" />
     <!-- CSS Files -->
     <link href="{{ asset('css/blk-design-system.css?v=1.0.0') }}" rel="stylesheet" />
-    <!-- Styles -->
+    <style>
+        select option {
+            margin: 40px;
+            background: #344675;
+            color: #fff;
+        }
+    </style>
 </head>
+
 <body class="@yield('bodyclass')">
     <div id="app">
         @include('layouts.partial.navbar')
@@ -40,5 +48,7 @@
     <script src="{{ asset('js/plugins/bootstrap-datetimepicker.js') }}" type="text/javascript"></script>
     <!-- Control Center for Black UI Kit: parallax effects, scripts for the example pages etc -->
     <script src="{{ asset('js/blk-design-system.min.js?v=1.0.0') }}" type="text/javascript"></script>
+    @stack('script')
 </body>
+
 </html>

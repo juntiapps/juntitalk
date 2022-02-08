@@ -15,8 +15,9 @@
                     <div class="col-lg-10 col-md-6 ml-auto mr-auto">
                         <div class="card card-coin card-plain">
                             <div class="card-header">
-                                <img src="{{ asset('img/mike.jpg') }}" class="img-center img-fluid rounded-circle">
-                                <h2 class="title">Profil Arief</h2>
+                                <img src="{{ asset('ava/' . $profile->profile_picture) }}"
+                                    class="img-center img-fluid rounded-circle">
+                                <h2 class="title">Profil {{ $profile->display_name }}</h2>
                                 <table class="table col-lg-4 mx-auto">
                                     <thead>
                                         <tr>
@@ -27,9 +28,9 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>0</th>
-                                            <td>0</th>
-                                            <td>0</th>
+                                            <td>{{ $profile->user->post->count() }}</td>
+                                            <td>{{ $profile->user->comment->count() }}</td>
+                                            <td>{{ $profile->user->reply->count() }}</td>
                                         </tr>
                                     </tbody>
                                     <thead>
@@ -91,37 +92,29 @@
                                                 <table class="table col-lg">
                                                     <tr>
                                                         <th>Nama</th>
-                                                        <td>Arief</td>
+                                                        <td>{{ $profile->display_name }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Tanggal Lahir</th>
-                                                        <td>6 Juli 1991</td>
+                                                        <td>{{ $profile->birthday }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Jenis Kelamin</th>
-                                                        <td>Laki-Laki</td>
+                                                        <td>{{ $profile->gender->gender }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Status</th>
-                                                        <td>Belum Kawin</td>
+                                                        <td>{{ $profile->status->status }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Alamat</th>
-                                                        <td>Indramayu</td>
+                                                        <td>{{ $profile->address }}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>Bio</th>
-                                                        <td>Have a Nice Day</td>
+                                                        <td>{{ $profile->bio }}</td>
                                                     </tr>
                                                 </table>
-                                                <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
-                                                    <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;">
-                                                    </div>
-                                                </div>
-                                                <div class="ps__rail-y" style="top: 0px; right: 0px;">
-                                                    <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;">
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="tab-pane" id="linkb">
@@ -138,7 +131,7 @@
                                                         <a href="#">Lanjut Baca...</a>
                                                     </div>
                                                 </div>
-                                            @endfor    
+                                            @endfor
                                         </div>
                                         <div class="tab-pane" id="linkc">
                                             @for ($i = 0; $i < 7; $i++)
@@ -149,7 +142,7 @@
                                                         <a href="#">Baca Postingan...</a>
                                                     </div>
                                                 </div>
-                                            @endfor  
+                                            @endfor
                                         </div>
                                         <div class="tab-pane" id="linkd">
                                             @for ($i = 0; $i < 7; $i++)
@@ -160,30 +153,34 @@
                                                         <a href="#">Baca Postingan...</a>
                                                     </div>
                                                 </div>
-                                            @endfor  
+                                            @endfor
                                         </div>
                                         <div class="tab-pane" id="linke">
                                             <div class="row">
-                                            @for ($i = 0; $i < 7; $i++)
+                                                @for ($i = 0; $i < 7; $i++)
                                                     <div class="col-2 justify-content-center text-center my-2">
-                                                        <img src="{{asset('img/lora.jpg')}}" alt="" class="rounded-circle" style="width:100px;height:100px;object-fit:cover">
+                                                        <img src="{{ asset('img/lora.jpg') }}" alt=""
+                                                            class="rounded-circle"
+                                                            style="width:100px;height:100px;object-fit:cover">
                                                         <p>username</p>
                                                         <a href="#" class="btn btn-sm btn-info">Lihat Profile</a>
                                                         <a href="#" class="btn btn-sm btn-info btn-neutral">chat</a>
                                                     </div>
-                                            @endfor  
+                                                @endfor
                                             </div>
                                         </div>
                                         <div class="tab-pane" id="linkf">
                                             <div class="row">
-                                            @for ($i = 0; $i < 7; $i++)
+                                                @for ($i = 0; $i < 7; $i++)
                                                     <div class="col-2 justify-content-center text-center my-2">
-                                                        <img src="{{asset('img/lora.jpg')}}" alt="" class="rounded-circle" style="width:100px;height:100px;object-fit:cover">
+                                                        <img src="{{ asset('img/lora.jpg') }}" alt=""
+                                                            class="rounded-circle"
+                                                            style="width:100px;height:100px;object-fit:cover">
                                                         <p>username</p>
                                                         <a href="#" class="btn btn-sm btn-info">Lihat Profile</a>
                                                         <a href="#" class="btn btn-sm btn-info btn-neutral">chat</a>
                                                     </div>
-                                            @endfor  
+                                                @endfor
                                             </div>
                                         </div>
                                         <div class="tab-pane" id="linkg">
@@ -195,7 +192,7 @@
                                                         <a href="#">Baca Postingan...</a>
                                                     </div>
                                                 </div>
-                                            @endfor  
+                                            @endfor
                                         </div>
                                     </div>
                                 </div>
@@ -204,5 +201,6 @@
                     </div>
                 </div>
             </div>
-        </section>
-    @endsection
+        </div>
+    </div>
+@endsection

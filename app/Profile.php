@@ -22,4 +22,14 @@ class Profile extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function gender()
+    {
+        return $this->belongsTo('App\Gender');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo('App\Status');
+    }
 }

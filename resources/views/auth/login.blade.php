@@ -21,7 +21,7 @@
                             <div class="card card-register">
                                 <div class="card-header">
                                     <img class="card-img" src="{{ asset('img/square1.png') }}" alt="Card image">
-                                    <h4 class="card-title">Daftar</h4>
+                                    <h4 class="card-title">Masuk</h4>
                                 </div>
                                 <div class="card-body">
                                     <form class="form" method="POST" action="{{ route('login') }}">
@@ -58,25 +58,12 @@
                                                 </span>
                                             @enderror
                                         </div>
-                                        <div class="form-group row">
-                                            <div class="col-md-6 offset-md-4">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="remember"
-                                                        id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                                    <label class="form-check-label" for="remember">
-                                                        {{ __('Remember Me') }}
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                </div>
+                                    </div>
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-info btn-round btn-lg">Daftar</a>
+                                    <button type="submit" class="btn btn-info btn-round btn-lg">Daftar</button>
                                         @if (Route::has('password.request'))
                                             <a class="btn btn-link" href="{{ route('password.request') }}">
-                                                {{ __('Forgot Your Password?') }}
+                                                {{ __('Lupa Password?') }}
                                             </a>
                                         @endif
                                 </div>
