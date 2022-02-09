@@ -33,7 +33,7 @@ class CommentController extends Controller
     public function destroy($id)
     {
         //Komentar::where('post_id', $id)->delete();
-        dd($id);
+        // dd($id);
         Comment::find($id)->delete();
         
         return redirect()->back();

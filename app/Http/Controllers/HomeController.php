@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Post;
 use App\Comment;
+use App\Like;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -28,7 +29,8 @@ class HomeController extends Controller
     {
         $post = Post::all();
         $comment = Comment::all();
-        return view('home', compact('post','comment'));
+        $like = Like::all();
+        return view('home', compact('post','comment','like'));
     }
 
 }

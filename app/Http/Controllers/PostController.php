@@ -52,7 +52,7 @@ class PostController extends Controller
     public function destroy($id)
     {
         //Komentar::where('post_id', $id)->delete();
-        dd($id);
+        // dd($id);
         Post::find($id)->delete();
         
         return redirect()->back();

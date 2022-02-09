@@ -30,6 +30,8 @@ Route::delete('/comment/{id}', 'CommentController@destroy')->name('delete.commen
 Route::get('/{name}', 'ProfileController@show')->name("show.profile");
 Route::get('/{name}/edit', 'ProfileController@edit')->name('edit.profile');
 Route::put('/{name}/update', 'ProfileController@update')->name('update.profile');
+Route::post('/like', 'LikeController@store')->name('store.like');
+Route::delete('/like/{id}', 'LikeController@destroy')->name('delete.like');
 
 
 // Route::get('/profile', function () {

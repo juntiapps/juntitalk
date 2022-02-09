@@ -106,7 +106,23 @@
                             </ul>
                             <ul class="nav justify-content-center">
                                 <li class="nav-item">
-                                    <button class="btn btn-info btn-sm"><i class="far fa-thumbs-up"></i> suka</button>
+                                    {{-- {{dd($item->like->where('user_id',Auth::id()))}} --}}
+                                    @if ($item->like->where('user_id',Auth::id())->count()!==0)
+                 
+                                    <form method="POST" action="{{route('delete.like',$item->like->where('user_id',Auth::id())->first()->id)}}" >
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger btn-sm" type="submit"><i class="far fa-thumbs-up"></i>
+                                            tidak suka</button>
+                                    </form> 
+                                    @else
+                                    <form method="POST" action='{{route('store.like')}}'>
+                                        @csrf
+                                        <input type="hidden" name="post_id" value="{{$item->id}}">
+                                        <button class="btn btn-info btn-sm" type="submit"><i class="far fa-thumbs-up"></i>
+                                            suka</button>
+                                    </form>
+                                    @endif
                                 </li>
                                 <li class="nav-item">
                                     <button class="btn btn-info btn-sm" id='show_comment'
