@@ -41,7 +41,7 @@
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ route('show.profile',Auth::user()->name) }}">Profil Saya</a>
-                                <a class="dropdown-item" href="{{ route('edit.profile',Auth::user()->name) }}">Sunting Profil Saya</a>
+                                {{-- <a class="dropdown-item" href="{{ route('edit.profile',Auth::user()->name) }}">Sunting Profil Saya</a> --}}
                                 
                                 <a class="dropdown-item" href="{{ route('logout') }}" 
                                     onclick=

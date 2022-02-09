@@ -17,7 +17,13 @@
                             <div class="card-header">
                                 <img src="{{ asset('ava/' . $profile->profile_picture) }}"
                                     class="img-center img-fluid rounded-circle">
-                                <h2 class="title">Profil {{ $profile->display_name }}</h2>
+                                <h2 class="title">Profil {{ $profile->display_name }}
+                                    @if (Auth::id() === $profile->user_id)
+                                        <span><a class="btn btn-success btn-sm"
+                                            href="{{ route('edit.profile', Auth::user()->name) }}">Sunting
+                                            Profil Saya</a></span>
+                                    @endif
+                                </h2>
                                 <table class="table col-lg-4 mx-auto">
                                     <thead>
                                         <tr>
