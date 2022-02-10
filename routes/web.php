@@ -32,6 +32,8 @@ Route::get('/{name}/edit', 'ProfileController@edit')->name('edit.profile');
 Route::put('/{name}/update', 'ProfileController@update')->name('update.profile');
 Route::post('/like', 'LikeController@store')->name('store.like');
 Route::delete('/like/{id}', 'LikeController@destroy')->name('delete.like');
+Route::post('/follow', 'FollowController@store')->name('store.follow');
+Route::delete('/follow/{id}', 'FollowController@destroy')->name('delete.follow');
 
 
 // Route::get('/profile', function () {

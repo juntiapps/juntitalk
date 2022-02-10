@@ -33,7 +33,7 @@
                         </form>
                     </div>
                 </div>
-                @forelse ($post as $item)
+                @forelse ($post->sortByDesc('created_at') as $item)
                     <div class="modal fade" id="postModal{{ $item->id }}" tabindex="-1"
                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -62,10 +62,11 @@
                     <div class="card pb-2">
                         <div class='card-header'>
                             <div class='row ml-2'>
+                                <a href="{{route('show.profile',$item->user->name)}}">
                                 <img src="{{ asset('ava/' . $item->user->profile->profile_picture) }}"
                                     class="rounded-circle" style="width: 40px; height:40px; object-fit:cover">
                                 <div class="col">
-                                    <strong>{{ $item->user->profile->display_name }}</strong>
+                                    <strong>{{ $item->user->profile->display_name }}</strong></a>
                                     <p class="text-muted">{{ $item->created_at->diffForHumans() }}</p>
                                 </div>
                                 <span class="float-right mr-3">

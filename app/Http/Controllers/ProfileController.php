@@ -67,7 +67,7 @@ class ProfileController extends Controller
         
         $profile->update($profile_data);
 
-        return redirect('/'.$name);
+        return redirect()->back();
     }
 
     // public function store($id, Request $request)
