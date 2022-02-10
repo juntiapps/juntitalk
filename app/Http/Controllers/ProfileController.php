@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Profile;
 use App\Gender;
 use App\Status;
+use App\Follow;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
@@ -13,8 +14,11 @@ class ProfileController extends Controller
     public function show($name)
     {
         $profile = Auth::user()->where('name',$name)->first()->profile;
-        
-        return view('profile.show', compact('profile'));
+        // dd(Follow::where('user_id',Auth::id())->user);
+        $following = Follow::where('follower_id',Auth::id())->get();
+        $follower = Follow::where('user_id',Auth::id())->get();
+        $follow = Follow::all();
+        return view('profile.show', compact('profile','following','follower','follow'));
     }
 
     public function edit($name)

@@ -24,22 +24,25 @@
                                                 Profil Saya</a></span>
                                     @else
                                         <span>
-                            
-                                            @if ($profile->user->follow->where('follower_id',Auth::id())->count()!=0)
-                                            {{-- {{dd()}} --}}
-                                            <form action="{{ route('delete.follow', $profile->user->follow->where('follower_id',Auth::id())->first()->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-primary btn-sm" href="">mengikuti</button>
-                                            </form>
-                                            @else 
-                                            <form action="{{ route('store.follow') }}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name='user_id' value="{{$profile->user_id}}">
-                                                <button type="submit" class="btn btn-info btn-sm" href="">ikuti</button>
-                                            </form>
+
+                                            @if ($profile->user->follow->where('follower_id', Auth::id())->count() != 0)
+                                                {{-- {{dd()}} --}}
+                                                <form
+                                                    action="{{ route('delete.follow', $profile->user->follow->where('follower_id', Auth::id())->first()->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-primary btn-sm"
+                                                        href="">mengikuti</button>
+                                                </form>
+                                            @else
+                                                <form action="{{ route('store.follow') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name='user_id' value="{{ $profile->user_id }}">
+                                                    <button type="submit" class="btn btn-info btn-sm" href="">ikuti</button>
+                                                </form>
                                             @endif
-                                            
+
                                         </span>
                                     @endif
                                 </h2>
@@ -67,9 +70,10 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>0</th>
-                                            <td>0</th>
-                                            <td>0</th>
+                                            {{-- {{dd($follow->where('follower_id',$profile->user_id))}} --}}
+                                            <td>{{ $follow->where('follower_id',$profile->user_id)->count() }}</td>
+                                            <td>{{ $follow->where('user_id',$profile->user_id)->count() }}</td>
+                                            <td>{{ $profile->user->like->count() }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -113,10 +117,7 @@
                                                 Like
                                             </a>
                                         </li>
-                                    @else
-
                                     @endif
-
                                 </ul>
                                 <div class="tab-content tab-subcategories">
                                     <div class="tab-pane active show" id="linka">
@@ -159,11 +160,6 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane" id="linkb">
-                                        @php
-                                            use Illuminate\Support\Str;
-                                            $post = 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolorem enim doloribus molestias eveniet reprehenderit. Dolorem velit non praesentium voluptates nostrum, sequi minima enim placeat aut quaerat odit alias at exercitationem.';
-                                            // dd($profile->user->post);
-                                        @endphp
                                         @forelse ($profile->user->post as $item)
                                             <div class="row mb-2">
                                                 @if ($item->picture != '')
@@ -179,75 +175,76 @@
                                         @empty
                                             <p>Tidak ada Postingan</p>
                                         @endforelse
-                                        {{-- @for ($i = 0; $i < 7; $i++)
+                                    </div>
+                                    <div class="tab-pane" id="linkc">
+                                        @forelse ($profile->user->comment as $item)
                                             <div class="row mb-2">
-                                                <img class="img-thumbnail" src="{{ asset('img/denys.jpg') }}">
                                                 <div class="col">
-                                                    <p class="text-muted">10 Agustus 2021</p>
-                                                    <p>{{ Str::limit($post, 128) }}</p>
+                                                    <p class="text-muted">{{ $item->created_at }}</p>
+                                                    <p>{{ Str::limit($item->comment, 128) }}</p>
                                                     <a href="#">Lanjut Baca...</a>
                                                 </div>
                                             </div>
-                                        @endfor --}}
-                                    </div>
-                                    <div class="tab-pane" id="linkc">
-                                        @for ($i = 0; $i < 7; $i++)
-                                            <div class="row mb-2">
-                                                <div class="col">
-                                                    <p class="text-muted">10 Agustus 2021</p>
-                                                    <p>{{ Str::limit($post, 128) }}</p>
-                                                    <a href="#">Baca Postingan...</a>
-                                                </div>
-                                            </div>
-                                        @endfor
+                                        @empty
+                                            <p>Tidak ada Komentar</p>
+                                        @endforelse
                                     </div>
                                     <div class="tab-pane" id="linkd">
-                                        @for ($i = 0; $i < 7; $i++)
+                                        @forelse ($profile->user->reply as $item)
                                             <div class="row mb-2">
                                                 <div class="col">
-                                                    <p class="text-muted">10 Agustus 2021</p>
-                                                    <p>{{ Str::limit($post, 128) }}</p>
-                                                    <a href="#">Baca Postingan...</a>
+                                                    <p class="text-muted">{{ $item->created_at }}</p>
+                                                    <p>{{ Str::limit($item->reply, 128) }}</p>
+                                                    <a href="#">Lanjut Baca...</a>
                                                 </div>
                                             </div>
-                                        @endfor
+                                        @empty
+                                            <p>Tidak ada Balasan</p>
+                                        @endforelse
                                     </div>
                                     <div class="tab-pane" id="linke">
                                         <div class="row">
-                                            @for ($i = 0; $i < 7; $i++)
+                                            @forelse ($following as $item)
                                                 <div class="col-2 justify-content-center text-center my-2">
-                                                    <img src="{{ asset('img/lora.jpg') }}" alt="" class="rounded-circle"
+                                                    <img src="{{ asset('ava/' . $item->user->profile->profile_picture) }}"
+                                                        alt="" class="rounded-circle"
                                                         style="width:100px;height:100px;object-fit:cover">
-                                                    <p>username</p>
-                                                    <a href="#" class="btn btn-sm btn-info">Lihat Profile</a>
+                                                    <p>{{ $item->user->name }}</p>
+                                                    <a href="{{ route('show.profile', $item->user->name) }}"
+                                                        class="btn btn-sm btn-info">Lihat Profile</a>
                                                     <a href="#" class="btn btn-sm btn-info btn-neutral">chat</a>
                                                 </div>
-                                            @endfor
+                                            @empty
+                                                Tidak ada yang diikuti
+                                            @endforelse
                                         </div>
                                     </div>
                                     <div class="tab-pane" id="linkf">
                                         <div class="row">
-                                            @for ($i = 0; $i < 7; $i++)
+                                            @forelse ($follower as $item)
                                                 <div class="col-2 justify-content-center text-center my-2">
-                                                    <img src="{{ asset('img/lora.jpg') }}" alt="" class="rounded-circle"
+                                                    <img src="{{ asset('ava/' . $item->user->profile->profile_picture) }}"
+                                                        alt="" class="rounded-circle"
                                                         style="width:100px;height:100px;object-fit:cover">
-                                                    <p>username</p>
-                                                    <a href="#" class="btn btn-sm btn-info">Lihat Profile</a>
+                                                    <p>{{ $item->user->name }}</p>
+                                                    <a href="{{ route('show.profile', $item->user->name) }}"
+                                                        class="btn btn-sm btn-info">Lihat Profile</a>
                                                     <a href="#" class="btn btn-sm btn-info btn-neutral">chat</a>
                                                 </div>
-                                            @endfor
+                                            @empty
+                                                Tidak ada yang mengikuti
+                                            @endforelse
                                         </div>
                                     </div>
                                     <div class="tab-pane" id="linkg">
-                                        @for ($i = 0; $i < 7; $i++)
-                                            <div class="row mb-2">
-                                                <div class="col">
-                                                    <p class="text-muted">10 Agustus 2021</p>
-                                                    <p>{{ Str::limit($post, 128) }}</p>
-                                                    <a href="#">Baca Postingan...</a>
-                                                </div>
-                                            </div>
-                                        @endfor
+                                        @forelse ($profile->user->like as $item)
+                                            <p>Kamu menyukai postingan {{ $item->post->user->name }}
+                                                "{{ Str::limit($item->post->post, 20) }}"
+                                                <a href="{{ route('show.post', $item->post->id) }}"> Lihat Postingan</a>
+                                            </p>
+                                        @empty
+                                            <p>Tidak ada Postingan yang disukai</p>
+                                        @endforelse
                                     </div>
                                 </div>
                             </div>
