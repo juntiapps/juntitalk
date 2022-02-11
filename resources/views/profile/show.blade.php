@@ -46,23 +46,12 @@
                                         </span>
                                     @endif
                                 </h2>
-                                <table class="table col-lg-4 mx-auto">
+                                <table class="table col-lg-4 mx-auto text-center">
                                     <thead>
                                         <tr>
                                             <th>Postingan</th>
                                             <th>Komentar</th>
                                             <th>Balasan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>{{ $profile->user->post->count() }}</td>
-                                            <td>{{ $profile->user->comment->count() }}</td>
-                                            <td>{{ $profile->user->reply->count() }}</td>
-                                        </tr>
-                                    </tbody>
-                                    <thead>
-                                        <tr>
                                             <th>Following</th>
                                             <th>Follower</th>
                                             <th>Suka</th>
@@ -70,14 +59,15 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            {{-- {{dd($follow->where('follower_id',$profile->user_id))}} --}}
-                                            <td>{{ $follow->where('follower_id',$profile->user_id)->count() }}</td>
-                                            <td>{{ $follow->where('user_id',$profile->user_id)->count() }}</td>
+                                            <td>{{ $profile->user->post->count() }}</td>
+                                            <td>{{ $profile->user->comment->count() }}</td>
+                                            <td>{{ $profile->user->reply->count() }}</td>
+                                            <td>{{ $follow->where('follower_id', $profile->user_id)->count() }}</td>
+                                            <td>{{ $follow->where('user_id', $profile->user_id)->count() }}</td>
                                             <td>{{ $profile->user->like->count() }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
-
                             </div>
                             <div class="card-body">
                                 <ul class="nav nav-tabs nav-tabs-primary justify-content-center">
@@ -222,12 +212,13 @@
                                     <div class="tab-pane" id="linkf">
                                         <div class="row">
                                             @forelse ($follower as $item)
+                                            {{-- {{dd($item->where)}} --}}
                                                 <div class="col-2 justify-content-center text-center my-2">
-                                                    <img src="{{ asset('ava/' . $item->user->profile->profile_picture) }}"
+                                                    <img src="{{ asset('ava/' . $users->find($item->follower_id)->profile->profile_picture) }}"
                                                         alt="" class="rounded-circle"
                                                         style="width:100px;height:100px;object-fit:cover">
-                                                    <p>{{ $item->user->name }}</p>
-                                                    <a href="{{ route('show.profile', $item->user->name) }}"
+                                                    <p>{{ $users->find($item->follower_id)->name }}</p>
+                                                    <a href="{{ route('show.profile', $users->find($item->follower_id)->name) }}"
                                                         class="btn btn-sm btn-info">Lihat Profile</a>
                                                     <a href="#" class="btn btn-sm btn-info btn-neutral">chat</a>
                                                 </div>
@@ -238,7 +229,8 @@
                                     </div>
                                     <div class="tab-pane" id="linkg">
                                         @forelse ($profile->user->like as $item)
-                                            <p>Kamu menyukai postingan {{ $item->post->user->name }}
+                                            <p class="blockquote">Kamu menyukai postingan <a
+                                                    href="{{ route('show.profile', $item->post->user->name) }}">{{ $item->post->user->name }}</a>
                                                 "{{ Str::limit($item->post->post, 20) }}"
                                                 <a href="{{ route('show.post', $item->post->id) }}"> Lihat Postingan</a>
                                             </p>

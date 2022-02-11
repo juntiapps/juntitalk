@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Post;
 use App\Comment;
 use App\Like;
+use App\Follow;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
@@ -27,10 +28,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $post = Post::all();
-        $comment = Comment::all();
-        $like = Like::all();
-        return view('home', compact('post','comment','like'));
+        $follow=Follow::all();
+        $filter = $follow->where('follower_id', Auth::id())->map(function ($item,$key){
+            return $item->user_id;
+        });
+        
+        $post = Post::whereIn("user_id", $filter->toArray())->get();
+        return view('home', compact('post'));
     }
 
 }
