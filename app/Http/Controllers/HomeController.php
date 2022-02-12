@@ -32,8 +32,8 @@ class HomeController extends Controller
         $filter = $follow->where('follower_id', Auth::id())->map(function ($item,$key){
             return $item->user_id;
         });
-        
-        $post = Post::whereIn("user_id", $filter->toArray())->get();
+        // dd($filter->concat([Auth::id()]));
+        $post = Post::whereIn("user_id", $filter->concat([Auth::id()])->toArray())->get();
         return view('home', compact('post'));
     }
 
