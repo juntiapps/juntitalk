@@ -108,7 +108,7 @@
                             </li>
                         </ul>
 
-                        <div class="px-3 my-2 row align-items-center">
+                        <div class="px-3 my-2 row align-items-center formcomment">
                             <img src="{{ asset('ava/' . $post->user->profile->profile_picture) }}"
                                 class="rounded-circle my-1" style="width: 30px; height:30px; object-fit:cover">
                             <div class="col my-1">
@@ -134,7 +134,19 @@
                                     </div>
                                     <div class="col">
                                         <div class="row">
-                                            Balas<span
+                                            <a href="javascript:void(0)" id="reply{{ $comment->id }}" onclick="
+                                                $('#comment{{ $comment->id }}').slideToggle(function(){
+                                                    if($('#comment{{ $comment->id }}').is(':visible')){
+                                                        $('.formcomment').slideUp();
+                                                        $('#reply{{ $comment->id }}').html('cancel');
+                                                    } else {
+                                                        $('.formcomment').slideDown();
+                                                        $('#reply{{ $comment->id }}').html('balas')
+                                                    }
+                                                });
+                                            ">
+                                    balas
+                                </a><span
                                                 class="mx-3">{{ $comment->created_at->diffForHumans() }}</span>
                                             @if (Auth::id() === $comment->user_id)
                                                 <a href="#" data-toggle="modal"
@@ -161,7 +173,7 @@
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">Tutup</button>
+                                                     data-dismiss="modal">Tutup</button>
                                                 <form method="post" action="{{ route('delete.comment', $comment->id) }}">
                                                     @csrf
                                                     @method('DELETE')
@@ -172,6 +184,80 @@
                                     </div>
                                 </div>
                             </div>
+                            {{--reply list start--}}
+                            @foreach ($comment->reply->sortByDesc('created_at')->slice(0, 5) as $reply)
+                                <div class='px-3 my-2 row'>
+                                    <a href="{{ route('show.profile', $reply->user->name) }}">
+                                        <img src="{{ asset('ava/' . $reply->user->profile->profile_picture) }}"
+                                            class="rounded-circle my-1 ml-5"
+                                            style="width: 30px; height:30px; object-fit:cover"></a>
+                                    <div class="col-auto">
+                                        <div class="px-2 py-1 rounded bg-dark">
+                                            <small><a
+                                                    href="{{ route('show.profile', $reply->user->name) }}">{{ $reply->user->profile->display_name }}</strong></a>
+                                                <p>{{ $reply->reply }}</p>
+                                        </div>
+                                        <div class="col">
+                                            <div class="row">
+                                                <span
+                                                    class="mr-3">{{ $reply->created_at->diffForHumans() }}</span>
+                                                @if (Auth::id() === $reply->user_id)
+                                                    <a href="#" data-toggle="modal"
+                                                        data-target="#replyModal{{ $reply->id }}">Hapus</a>
+                                                @endif
+                                                </small>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="modal fade" id="replyModal{{ $reply->id }}" tabindex="-1"
+                                        aria-labelledby="commentModal" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Menghapus Balasan id={{ $reply->id }}
+                                                    </h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Apakah anda yakin?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-dismiss="modal">Tutup</button>
+                                                    <form method="post" action="{{ route('delete.reply', $reply->id) }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                            {{--reply list end--}}
+                            {{-- reply form start --}}
+                            <div class="replyform" style="display:none" id="comment{{ $comment->id }}">
+                                <div class="px-3 my-2 row align-items-center">
+                                    <img src="{{ asset('ava/' . Auth::user()->profile->profile_picture) }}"
+                                        class="rounded-circle my-1 ml-5" style="width: 30px; height:30px; object-fit:cover">
+                                    <div class="col my-1">
+                                        <form method="POST" action="{{ route('store.reply') }}">
+                                            @csrf
+                                            <input type="hidden" name="comment_id" value="{{ $comment->id }}">
+                                            <input type="text" class="form-control form-control-sm"
+                                                placeholder="Tulis Balasan" name="reply">
+                                    </div>
+                                    <input class="btn btn-info btn-sm my-1" type="submit" id="button-addon2" value="balas">
+                                    </form>
+                                </div>
+                            </div>
+                            {{-- reply form end --}}
                         @empty
                             <blockquote type="blockquote text-center">tidak ada komentar</blockquote>
                         @endforelse

@@ -42,7 +42,6 @@
 
                 {{-- post list form start --}}
                 @forelse ($post->sortByDesc('created_at') as $item)
-                
                     {{-- modal delete post start --}}
                     <div class="modal fade" id="postModal{{ $item->id }}" tabindex="-1"
                         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -163,9 +162,8 @@
                         </div>
                         {{-- create comment form end --}}
                         {{-- list comment form start --}}
-                        
+
                         @forelse ($item->comment->sortByDesc('created_at')->slice(0,5) as $comment)
-                        
                             <div class='px-3 my-2 row'>
                                 <a href="{{ route('show.profile', $comment->user->name) }}">
                                     <img src="{{ asset('ava/' . $comment->user->profile->profile_picture) }}"
@@ -178,20 +176,17 @@
                                     </div>
                                     <div class="col">
                                         <div class="row">
-                                            <a  href="javascript:void(0)" 
-                                                id="reply{{ $comment->id }}"
-                                                onclick="
-                                                    $('#comment{{ $comment->id }}').slideToggle(function(){
-                                                        if($('#comment{{ $comment->id }}').is(':visible')){
-                                                            $('.formcomment').slideUp();
-                                                            $('#reply{{ $comment->id }}').html('cancel');
-                                                        } else {
-                                                            $('.formcomment').slideDown();
-                                                            $('#reply{{ $comment->id }}').html('balas')
-                                                        }
-                                                    });
-                                                "
-                                            >
+                                            <a href="javascript:void(0)" id="reply{{ $comment->id }}" onclick="
+                                                $('#comment{{ $comment->id }}').slideToggle(function(){
+                                                    if($('#comment{{ $comment->id }}').is(':visible')){
+                                                        $('.formcomment').slideUp();
+                                                        $('#reply{{ $comment->id }}').html('cancel');
+                                                    } else {
+                                                        $('.formcomment').slideDown();
+                                                        $('#reply{{ $comment->id }}').html('balas')
+                                                    }
+                                                });
+                                            ">
                                                 balas
                                             </a><span
                                                 class="mx-3">{{ $comment->created_at->diffForHumans() }}</span>
@@ -233,14 +228,13 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            @foreach ($comment->reply->sortByDesc('created_at')->slice(0,5) as $reply)
-                            {{-- {{dd($reply->user)}} --}}
+                            {{-- reply list start --}}
+                            @foreach ($comment->reply->sortByDesc('created_at')->slice(0, 5) as $reply)
                                 <div class='px-3 my-2 row'>
-                                    
                                     <a href="{{ route('show.profile', $reply->user->name) }}">
                                         <img src="{{ asset('ava/' . $reply->user->profile->profile_picture) }}"
-                                            class="rounded-circle my-1 ml-5" style="width: 30px; height:30px; object-fit:cover"></a>
+                                            class="rounded-circle my-1 ml-5"
+                                            style="width: 30px; height:30px; object-fit:cover"></a>
                                     <div class="col-auto">
                                         <div class="px-2 py-1 rounded bg-dark">
                                             <small><a
@@ -249,7 +243,8 @@
                                         </div>
                                         <div class="col">
                                             <div class="row">
-                                                <span class="mr-3">{{ $reply->created_at->diffForHumans() }}</span>
+                                                <span
+                                                    class="mr-3">{{ $reply->created_at->diffForHumans() }}</span>
                                                 @if (Auth::id() === $reply->user_id)
                                                     <a href="#" data-toggle="modal"
                                                         data-target="#replyModal{{ $reply->id }}">Hapus</a>
@@ -289,6 +284,7 @@
                                     </div>
                                 </div>
                             @endforeach
+                            {{-- reply list end --}}
                             {{-- reply form start --}}
                             <div class="replyform" style="display:none" id="comment{{ $comment->id }}">
                                 <div class="px-3 my-2 row align-items-center">

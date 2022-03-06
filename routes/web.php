@@ -19,9 +19,12 @@ Route::get('/', function () {
     }  
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/retrieve/{id}', 'AjaxController@catch')->name('retrieve.chat');
+Route::post('/chats', 'AjaxController@store')->name('store.chat');
+Route::get('/chats/{id}', 'ChatController@show')->name('show.chat');
 Route::get('/post/{id}', 'PostController@show')->name('show.post');
 Route::post('/post', 'PostController@store')->name('store.post');
 Route::delete('/post/{id}', 'PostController@destroy')->name('delete.post');
@@ -36,6 +39,8 @@ Route::post('/follow', 'FollowController@store')->name('store.follow');
 Route::delete('/follow/{id}', 'FollowController@destroy')->name('delete.follow');
 Route::post('/reply', 'ReplyController@store')->name('store.reply');
 Route::delete('/reply/{id}', 'ReplyController@destroy')->name('delete.reply');
+
+
 
 
 // Route::get('/profile', function () {

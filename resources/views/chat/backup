@@ -1,0 +1,169 @@
+@extends('layouts.app')
+
+@section('title')
+    Chat
+@endsection
+
+@section('bodyclass')
+    index-page
+@endsection
+
+@section('content')
+    <div class="section">
+        <div class="container">
+            <div class="card" style="height: 80vh;max-height: 80vh;">
+                <div class="card-body h-100">
+                    <div class='row h-100'>
+                        <div class="col mx-1 d-flex flex-column h-100">
+                            <div class='row align-items-center p-2 bg-info rounded-top' style="cursor:pointer;">
+                                <img src="{{ asset('ava/' . $user->profile->profile_picture) }}" class="rounded-circle"
+                                    style="width: 40px; height:40px; object-fit:cover">
+                                <div class="col">
+                                    <strong class="text-white">{{ $user->profile->display_name }}</strong>
+                                </div>
+                                <span class="float-right mr-3">
+                                    <div class="dropdown">
+                                        <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            {{-- @if (Auth::id() === $item->user_id)
+                                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                                data-target="#postModal{{ $item->id }}">Hapus Postingan</a>
+                                        @endif
+                                        <a class="dropdown-item" href="{{ route('show.post', $item->id) }}">Tampilkan
+                                            Postingan</a> --}}
+                                        </div>
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="row bg-light justify-content-start rounded-bottom"
+                                style="overflow-y:auto; height:100%">
+                                <div class="col">
+                                    {{-- {{dd($sorted)}} --}}
+                                    @forelse ($sorted as $chat)
+                                        {{-- {{dd($chat->created_at->format('dmy'),$sorted[$loop->index]->created_at->format('dmy'))}} --}}
+                                        @if ($loop->index == 0 || $chat->created_at->format('d F Y') != $sorted[$loop->index - 1]->created_at->format('d F Y'))
+                                            <div class="row my-1">
+                                                <div class="col"></div>
+                                                <div class="text-center text-white-50 p1 rounded p-1 bg-dark">
+                                                    {{ $chat->created_at->format('d F Y') }}
+                                                </div>
+                                                <div class="col"></div>
+                                            </div>
+                                        @endif
+                                        @if ($chat->user_id == Auth::id())
+                                            <div class="row m-2">
+                                                <div class="col"></div>
+                                                <div class="col-auto bg-success p-2" style="border-radius: 10px">
+                                                    @if ($chat->picture != '')
+                                                        <div style="height:200px;">
+                                                            <img src="{{ asset('imagechat/' . $chat->picture) }}"
+                                                                class="h-100">
+                                                        </div>
+                                                    @endif
+                                                    <p class="text-dark"> {{ $chat->chat }}</p>
+                                                    <small
+                                                        class="text-muted float-right">{{ $chat->created_at->format('H:i') }}</small>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <div class="row m-2">
+                                                <div class="col-auto bg-info p-2" style="border-radius: 10px">
+                                                    @if ($chat->picture != '')
+                                                        <div style="height:200px;">
+                                                            <img src="{{ asset('imagechat/' . $chat->picture) }}"
+                                                                class="h-100">
+                                                        </div>
+                                                    @endif
+                                                    <p>{{ $chat->chat }}</p>
+                                                    <small
+                                                        class="text-white-50 float-right">{{ $chat->created_at->format('H:i') }}</small>
+                                                </div>
+                                                <div class="col"></div>
+                                            </div>
+                                        @endif
+                                    @empty
+                                    <div class="row h-100 align-items-center justify-content-center">
+                                        <p class="bg-primary d-inline-block p-2 rounded">Silahkan Mulai Chat</p>
+                                    </div>
+                                    @endforelse
+                                </div>
+                            </div>
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                            <form method="POST" enctype="multipart/form-data" id="sendchat">
+                                @csrf
+                                {{-- {{dd(Session::token())}} --}}
+                                {{-- <input type="hidden" name="_token" id="csrf" value="{{ Session::token() }}"> --}}
+                                <input type="hidden" name="to_user_id" value="{{ $user->id }}" id="to_user_id">
+                                <div class="row align-items-center">
+                                    <input type="file" id="picture" name="picture" accept="image/*" hidden>
+                                    <label id="custom-label" for='picture' class="btn btn-info btn-sm py-2"
+                                        style="display: inline-block"><i class="fas fa-paperclip fa-1x"></i></label>
+                                    <div class="col my-1">
+                                        <input type="text" class="form-control" placeholder="Tulis pesan" name="chat"
+                                            id="chat">
+                                    </div>
+                                    <button class="btn btn-info btn-sm py-2" id="sendchats" type="button"><i
+                                            class="fas fa-paper-plane"></i></button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+@endsection
+
+@push('script')
+    <script>
+        $('input[type="file"]').change(function(e) {
+            var fileName = e.target.files[0].name;
+            $('#custom-label').html(fileName);
+        });
+        // 
+    </script>
+    <script>
+        $('#sendchats').click(function(e) {
+            let form = $('#sendchat')
+            let formData = new FormData(form[0]);
+            $.ajax({
+                url: "{{ route('store.chat') }}",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function(response) {
+                    console.log("res", response);
+                    // var dataResult = JSON.parse(dataResult);
+                    if (response.status == 200) {
+                        alert("Success");
+                        // $.get("{{ route('show.chat', $user->id) }}", function(data, status) {
+                        //     alert("Data: " + data + "\nStatus: " + status);
+                        // });
+                    }
+                },
+                error: function(error) {
+                    console.log("error", error.responseJSON.errors);
+                }
+            });
+
+            // } else {
+            //     alert('Please fill all the field !');
+            // }
+        });
+    </script>
+@endpush

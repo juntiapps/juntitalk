@@ -60,7 +60,7 @@
                                         </div>
                                     </div>
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-info btn-round btn-lg">Daftar</button>
+                                    <button type="submit" class="btn btn-info btn-round btn-lg">Masuk</button>
                                         @if (Route::has('password.request'))
                                             <a class="btn btn-link" href="{{ route('password.request') }}">
                                                 {{ __('Lupa Password?') }}

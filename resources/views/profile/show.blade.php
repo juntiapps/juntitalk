@@ -16,7 +16,7 @@
                         <div class="card card-coin card-plain">
                             <div class="card-header">
                                 <img src="{{ asset('ava/' . $profile->profile_picture) }}"
-                                    class="img-center img-fluid rounded-circle">
+                                    class="img-center rounded-circle" style="object-fit:cover;height:170px;width:170px">
                                 <h2 class="title">Profil {{ $profile->display_name }}
                                     @if (Auth::id() === $profile->user_id)
                                         <span><a class="btn btn-success btn-sm"
@@ -153,13 +153,13 @@
                                         @forelse ($profile->user->post as $item)
                                             <div class="row mb-2">
                                                 @if ($item->picture != '')
-                                                    <img class="img-thumbnail"
+                                                    <img class="img-thumbnail ml-3" style="width: 70px; height:70px; object-fit:cover"
                                                         src="{{ asset('imagepost/' . $item->picture) }}">
                                                 @endif
                                                 <div class="col">
                                                     <p class="text-muted">{{ $item->created_at }}</p>
                                                     <p>{{ Str::limit($item->post, 128) }}</p>
-                                                    <a href="#">Lanjut Baca...</a>
+                                                    <a href="{{route("show.post",$item->id)}}">Lanjut Baca...</a>
                                                 </div>
                                             </div>
                                         @empty
@@ -172,7 +172,7 @@
                                                 <div class="col">
                                                     <p class="text-muted">{{ $item->created_at }}</p>
                                                     <p>{{ Str::limit($item->comment, 128) }}</p>
-                                                    <a href="#">Lanjut Baca...</a>
+                                                    <a href="{{route("show.post",$item->post_id)}}">Lihat Postingan...</a>
                                                 </div>
                                             </div>
                                         @empty
@@ -181,11 +181,12 @@
                                     </div>
                                     <div class="tab-pane" id="linkd">
                                         @forelse ($profile->user->reply as $item)
+                                        {{-- {{dd($item->comment)}} --}}
                                             <div class="row mb-2">
                                                 <div class="col">
                                                     <p class="text-muted">{{ $item->created_at }}</p>
                                                     <p>{{ Str::limit($item->reply, 128) }}</p>
-                                                    <a href="#">Lanjut Baca...</a>
+                                                    <a href="{{route("show.post",$item->comment->post_id)}}">Lanjut Baca...</a>
                                                 </div>
                                             </div>
                                         @empty
@@ -195,14 +196,14 @@
                                     <div class="tab-pane" id="linke">
                                         <div class="row">
                                             @forelse ($following as $item)
-                                                <div class="col-2 justify-content-center text-center my-2">
+                                                <div class="col-auto justify-content-center text-center my-2">
                                                     <img src="{{ asset('ava/' . $item->user->profile->profile_picture) }}"
                                                         alt="" class="rounded-circle"
                                                         style="width:100px;height:100px;object-fit:cover">
                                                     <p>{{ $item->user->name }}</p>
-                                                    <a href="{{ route('show.profile', $item->user->name) }}"
-                                                        class="btn btn-sm btn-info">Lihat Profile</a>
-                                                    <a href="#" class="btn btn-sm btn-info btn-neutral">chat</a>
+                                                    <p><a href="{{ route('show.profile', $item->user->name) }}"
+                                                        class="btn btn-sm btn-info">Lihat Profile</a></p>
+                                                    <p><a href="{{ route('show.chat', $item->user->id) }}" class="btn btn-sm btn-info btn-neutral">Chat</a></p>
                                                 </div>
                                             @empty
                                                 Tidak ada yang diikuti
@@ -212,15 +213,16 @@
                                     <div class="tab-pane" id="linkf">
                                         <div class="row">
                                             @forelse ($follower as $item)
-                                            {{-- {{dd($item->where)}} --}}
-                                                <div class="col-2 justify-content-center text-center my-2">
+                                                {{-- {{dd($item->where)}} --}}
+                                                <div class="col-auto justify-content-center text-center my-2">
                                                     <img src="{{ asset('ava/' . $users->find($item->follower_id)->profile->profile_picture) }}"
                                                         alt="" class="rounded-circle"
                                                         style="width:100px;height:100px;object-fit:cover">
                                                     <p>{{ $users->find($item->follower_id)->name }}</p>
-                                                    <a href="{{ route('show.profile', $users->find($item->follower_id)->name) }}"
-                                                        class="btn btn-sm btn-info">Lihat Profile</a>
-                                                    <a href="#" class="btn btn-sm btn-info btn-neutral">chat</a>
+                                                    <p><a href="{{ route('show.profile', $users->find($item->follower_id)->name) }}"
+                                                            class="btn btn-sm btn-info">Lihat Profile</a></p>
+                                                    <p><a href="{{ route('show.chat', $users->find($item->follower_id)) }}"
+                                                            class="btn btn-sm btn-info btn-neutral">Chat</a></p>
                                                 </div>
                                             @empty
                                                 Tidak ada yang mengikuti

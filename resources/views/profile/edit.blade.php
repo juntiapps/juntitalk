@@ -17,7 +17,9 @@
                         <div class="card card-coin card-plain">
                             <div class="card-header">
                                 <img src="{{ asset('ava/' . $profile->profile_picture) }}"
-                                    class="img-center img-fluid rounded-circle">
+                                    class="rounded-circle"
+                                    style="object-fit:cover;height:170px;width:170px"
+                                    >
                                 <h2 class="title">Profil {{ $profile->display_name }}</h2>
 
                             </div>

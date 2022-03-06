@@ -28,7 +28,7 @@ class ProfileController extends Controller
         $profile = Auth::user()->where('name',$name)->first()->profile;
         $gender = Gender::all();
         $status = Status::all();
-        return view('profile.edit', compact('profile','gender','status'));
+        return view('profile.show', compact('profile','gender','status'));
     }
 
     public function update(Request $request,$name)
