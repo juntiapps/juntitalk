@@ -9,12 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    public function store(Request $request)
+   public function store(Request $request)
     {
         $request->validate([
             'picture' => 'mimes:jpg,png,jpeg',

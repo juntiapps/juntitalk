@@ -8,11 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ReplyController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function store(Request $request)
     {
         $request->validate([

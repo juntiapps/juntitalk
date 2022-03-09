@@ -71,6 +71,8 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
+        // $user->sendEmailVerificationNotification();
+
         Profile::create([
             'user_id' => $user->id,
             'display_name' => $user->name,
